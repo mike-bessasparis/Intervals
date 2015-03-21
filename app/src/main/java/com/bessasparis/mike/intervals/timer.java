@@ -13,33 +13,47 @@ import org.w3c.dom.Text;
 
 public class timer extends ActionBarActivity {
 
-    int fastCountdown = 180;
-    int slowCountdown = 60;
+    int fastCountdown = 10;
+    int slowCountdown = 3;
+    private myCountDownTimer fastTimer;
+    private boolean timerDone = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
-        new CountDownTimer(fastCountdown*1000, 1000) {
-            TextView mTextField = (TextView) findViewById(R.id.countdown_text);
+        fastTimer = new myCountDownTimer(fastCountdown * 1000, 1000);
+        fastTimer.start();
 
-            public void onTick(long millisUntilFinished) {
-                mTextField.setText(" " + millisUntilFinished / 1000);
-            }
 
-            public void onFinish() {
-                mTextField.setText("done!");
-            }
-        }.start();
 
+    }
+
+    public class myCountDownTimer extends CountDownTimer {
+
+        TextView mTextField = (TextView) findViewById(R.id.countdown_text);
+
+        myCountDownTimer(long startTime, long interval) {
+            super(startTime, interval);
+        }
+
+        @Override
+        public void onFinish() {
+            mTextField.setText("Done");
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            mTextField.setText(" " + millisUntilFinished / 1000);
+        }
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_timer, menu);
+//        getMenuInflater().inflate(R.menu.menu_timer, menu);
         return true;
     }
 
