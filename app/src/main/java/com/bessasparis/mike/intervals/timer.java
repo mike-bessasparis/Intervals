@@ -13,34 +13,55 @@ import org.w3c.dom.Text;
 
 public class timer extends ActionBarActivity {
 
-    int fastCountdown = 10;
-    int slowCountdown = 3;
-    private myCountDownTimer fastTimer;
-    private boolean timerDone = false;
+    int fastCountdown = 21;
+    int slowCountdown = 8;
+    private SlowCountDownTimer mySlowTimer;
+    private FastCountDownTimer myFastTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
-        fastTimer = new myCountDownTimer(fastCountdown * 1000, 1000);
-        fastTimer.start();
+        mySlowTimer = new SlowCountDownTimer(slowCountdown * 1000, 1000);
+        myFastTimer = new FastCountDownTimer(fastCountdown * 1000, 1000);
 
-
+        myFastTimer.start();
 
     }
 
-    public class myCountDownTimer extends CountDownTimer {
+    public class FastCountDownTimer extends CountDownTimer {
 
         TextView mTextField = (TextView) findViewById(R.id.countdown_text);
+        private boolean done = false;
 
-        myCountDownTimer(long startTime, long interval) {
+        FastCountDownTimer(long startTime, long interval) {
             super(startTime, interval);
         }
 
         @Override
         public void onFinish() {
-            mTextField.setText("Done");
+            mySlowTimer.start();
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            mTextField.setText(" " + millisUntilFinished / 1000);
+        }
+    }
+
+    public class SlowCountDownTimer extends CountDownTimer {
+
+        TextView mTextField = (TextView) findViewById(R.id.countdown_text);
+        private boolean done = false;
+
+        SlowCountDownTimer(long startTime, long interval) {
+            super(startTime, interval);
+        }
+
+        @Override
+        public void onFinish() {
+            myFastTimer.start();
         }
 
         @Override
